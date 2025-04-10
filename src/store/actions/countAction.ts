@@ -1,15 +1,9 @@
 import { DECREMENT, INCREMENT } from "./actionTypes";
 
+export const increaseCounter = () => ({
+  type: INCREMENT,
+});
 
-export const increaseCounter = () => {
-    return {
-        type: INCREMENT,
-    }
-};
-
-export const decreaseCounter = () => {
-    return {
-        type: DECREMENT,
-    }
-};
-
+export const decreaseCounter = () => ({
+  type: DECREMENT,
+});

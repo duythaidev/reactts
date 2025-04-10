@@ -1,10 +1,10 @@
 import { DECREMENT, INCREMENT } from "../actions/actionTypes";
 
-interface initialState {
+interface InitialState {
     count: number
 }
 
-const INITIAL_STATE: initialState = {
+const INITIAL_STATE: InitialState = {
     count: 0
 };
 
