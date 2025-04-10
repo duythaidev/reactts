@@ -1,12 +1,15 @@
+import { DECREMENT, INCREMENT } from "./actionTypes";
 
-export function increase() {
-    return {
-        
-    };
-}
 
-export function decrease() {
+export const increaseCounter = () => {
     return {
-    };
-}
+        type: INCREMENT,
+    }
+};
+
+export const decreaseCounter = () => {
+    return {
+        type: DECREMENT,
+    }
+};
 
