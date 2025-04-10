@@ -15,10 +15,11 @@ import {
   ProConfigProvider,
   ProFormCaptcha,
   ProFormCheckbox,
+  ProFormMoney,
   ProFormText,
 } from '@ant-design/pro-components';
 
-import { AutoComplete, Button, Divider, Space, Tabs, message, theme } from 'antd';
+import { AutoComplete, Button, Divider, InputNumber, Space, Tabs, message, theme } from 'antd';
 import type { CSSProperties } from 'react';
 type LoginType = 'phone' | 'account';
 
@@ -30,7 +31,6 @@ const iconStyles: CSSProperties = {
 };
 
 interface user {
-  id: number,
   userName: string,
   age: number
 }
@@ -39,13 +39,18 @@ function App() {
   const [users, setUsers] = useState<user[]>([])
 
   useEffect(() => {
-    getUsers()
+    // getUsers()
   }, [])
-
   const getUsers = async () => {
     const { data } = await axios.get('http://localhost:8080/api/v1/users')
     if (data.EC === 0) {
       setUsers(data.DT)
+    }
+  }
+  const createUser = async (userName: string, age: number) => {
+    console.log(userName, age)
+    if (age !== 0 && userName.length > 0) {
+      const { data } = await axios.post('http://localhost:8080/api/v1/create-user', { userName : 'aaa', age:100 })
     }
   }
 
@@ -65,6 +70,14 @@ function App() {
           logo="https://github.githubassets.com/favicons/favicon.png"
           backgroundVideoUrl="https://gw.alipayobjects.com/v/huamei_gcee1x/afts/video/jXRBRK_VAwoAAAAAAAAAAAAAK4eUAQBr"
           title="Github"
+          onFinish={(values: user) => {
+            createUser(values.userName, values.age)
+          }}
+          submitter={{
+            searchConfig: {
+              submitText: 'Đăng nhập', // <-- đổi text ở đây
+            },
+          }}
           containerStyle={{
             backgroundColor: 'rgba(0, 0, 0,0.65)',
             backdropFilter: 'blur(4px)',
@@ -94,176 +107,46 @@ function App() {
               </Button>
             ),
           }}
-          actions={
-            <div
-              style={{
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                flexDirection: 'column',
-              }}
-            >
-              <Divider plain>
-                <span
-                  style={{
-                    color: token.colorTextPlaceholder,
-                    fontWeight: 'normal',
-                    fontSize: 14,
-                  }}
-                >
-                  Other login methods
-                </span>
-              </Divider>
-              <Space align="center" size={24}>
-                <div
-                  style={{
-                    display: 'flex',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    flexDirection: 'column',
-                    height: 40,
-                    width: 40,
-                    border: '1px solid ' + token.colorPrimaryBorder,
-                    borderRadius: '50%',
-                  }}
-                >
-                  <AlipayOutlined style={{ ...iconStyles, color: '#1677FF' }} />
-                </div>
-                <div
-                  style={{
-                    display: 'flex',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    flexDirection: 'column',
-                    height: 40,
-                    width: 40,
-                    border: '1px solid ' + token.colorPrimaryBorder,
-                    borderRadius: '50%',
-                  }}
-                >
-                  <TaobaoOutlined style={{ ...iconStyles, color: '#FF6A10' }} />
-                </div>
-                <div
-                  style={{
-                    display: 'flex',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    flexDirection: 'column',
-                    height: 40,
-                    width: 40,
-                    border: '1px solid ' + token.colorPrimaryBorder,
-                    borderRadius: '50%',
-                  }}
-                >
-                  <WeiboOutlined style={{ ...iconStyles, color: '#1890ff' }} />
-                </div>
-              </Space>
-            </div>
-          }
+
         >
-          <Tabs
-            centered
-            activeKey={loginType}
-            onChange={(activeKey) => setLoginType(activeKey as LoginType)}
-          >
-            <Tabs.TabPane key={'account'} tab={'Username & Password Login'} />
-            <Tabs.TabPane key={'phone'} tab={'Phone Number Login'} />
-          </Tabs>
-          {loginType === 'account' && (
-            <>
-              <ProFormText name="username"
-                fieldProps={{
-                  size: 'large',
-                }}
-                placeholder={'Username: admin or user'}
 
-                rules={[
-                  {
-                    required: true,
-                    message: 'Please enter your username!',
-                  },
-                ]}
+          <>
+            <ProFormText name="userName"
+              placeholder={'Username: admin or user'}
+              fieldProps={{
+                size: 'large',
+              }}
+              initialValue={'aaa'}
+              rules={[
+                {
+                  required: true,
+                  message: 'Please enter your username!',
+                },
+              ]}
 
-              />
-              <ProFormText.Password name="password"
+            />
+            <ProFormMoney
+              name="age"
+              initialValue={100}
 
-                fieldProps={{
-                  size: 'large',
-                  "autoComplete" : 'true'
-                }}
-                placeholder={'Password: ant.design'}
-                rules={[
-                  {
-                    required: true,
-                    message: 'Please enter your password!',
-                  },
-                ]}
-              />
-            </>
-          )}
-          {loginType === 'phone' && (
-            <>
-              <ProFormText
-                fieldProps={{
-                  autoComplete: 'true',
-                  size: 'large',
-                  prefix: (
-                    <MobileOutlined
-                      style={{
-                        color: token.colorText,
-                      }}
-                      className={'prefixIcon'}
-                    />
-                  ),
-                }}
-                name="mobile"
-                placeholder={'Phone number'}
-                rules={[
-                  {
-                    required: true,
-                    message: 'Please enter your phone number!',
-                  },
-                  {
-                    pattern: /^1\d{10}$/,
-                    message: 'Invalid phone number format!',
-                  },
-                ]}
-              />
-              <ProFormCaptcha
-                fieldProps={{
-                  size: 'large',
-                  prefix: (
-                    <LockOutlined
-                      style={{
-                        color: token.colorText,
-                      }}
-                      className={'prefixIcon'}
-                    />
-                  ),
-                }}
-                captchaProps={{
-                  size: 'large',
-                }}
-                placeholder={'Enter the verification code'}
-                captchaTextRender={(timing, count) => {
-                  if (timing) {
-                    return `${count} seconds to resend`;
-                  }
-                  return 'Get Verification Code';
-                }}
-                name="captcha"
-                rules={[
-                  {
-                    required: true,
-                    message: 'Please enter the verification code!',
-                  },
-                ]}
-                onGetCaptcha={async () => {
-                  message.success('Verification code sent! Code: 1234');
-                }}
-              />
-            </>
-          )}
+              fieldProps={{
+
+                moneySymbol: false,
+                size: 'large',
+              }}
+              rules={[
+                {
+                  required: true,
+                  message: 'Please enter your age!',
+                },
+              ]}
+              placeholder={'Age: Enter your age'}
+              locale="en-US"
+              min={0}
+              max={1000}
+              width="lg"
+            />
+          </>
           <div
             style={{
               marginBlockEnd: 24,
