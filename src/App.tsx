@@ -10,6 +10,7 @@ import {
   UserOutlined,
   WeiboOutlined,
 } from '@ant-design/icons';
+
 import {
   LoginFormPage,
   ProConfigProvider,
