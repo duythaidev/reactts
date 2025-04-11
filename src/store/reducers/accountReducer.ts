@@ -13,7 +13,7 @@ interface actionType {
     type: typeof INCREMENT | typeof DECREMENT;
 }
 
-const countReducer = (state = INITIAL_VAlUE, action: actionType) => {
+const accountReducer = (state = INITIAL_VAlUE, action: actionType) => {
     switch (action.type) {
         case INCREMENT:
             return state + 1
@@ -24,4 +24,4 @@ const countReducer = (state = INITIAL_VAlUE, action: actionType) => {
     }
 };
 
-export default countReducer
+export default accountReducer

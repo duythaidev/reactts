@@ -1,7 +1,9 @@
 import { use, useEffect, useState } from 'react'
 import axios from 'axios';
-
-
+import { connect, useSelector } from 'react-redux';
+import { RootState, useAppSelector } from './store/store';
+import { buttonStyle } from './styles/cssStyle'
+import { Button, theme } from 'antd';
 import {
   LoginFormPage,
   ProConfigProvider,
@@ -10,23 +12,15 @@ import {
   ProFormText,
 } from '@ant-design/pro-components';
 
-import { Button, theme } from 'antd';
-import { decreaseCounter, increaseCounter } from './store/actions/countAction';
-import { connect } from 'react-redux';
-import { RootState } from './store/store';
-
 interface user {
   userName: string,
   age: number
 }
 
-interface Props {
-  count: number;
-  increaseCounter: () => void;
-  decreaseCounter: () => void;
-}
+const App = ({ count, increase, decrease }: any) => {
 
-const App = ({ count, increaseCounter, decreaseCounter }: Props) => {
+  const publicCount: number = useAppSelector(state => state.count)
+
   const createUser = async (userName: string, age: number) => {
     console.log(userName, age)
     if (age !== 0 && userName.length > 0) {
@@ -34,15 +28,15 @@ const App = ({ count, increaseCounter, decreaseCounter }: Props) => {
     }
   }
   const { token } = theme.useToken();
-
+  console.log(publicCount)
   return (
     <>
       <div>
         <h1>Counter: {count}</h1>
-        <button onClick={increaseCounter} className="uppercase text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-1 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">
+        <button onClick={increase} className={buttonStyle} >
           Increase
         </button>
-        <button onClick={decreaseCounter}>Decrease</button>
+        <button onClick={decrease} className={buttonStyle}>Decrease</button>
       </div>
       <ProConfigProvider dark={true}>
         <div
@@ -157,10 +151,14 @@ const App = ({ count, increaseCounter, decreaseCounter }: Props) => {
 }
 
 const mapStateToProps = (state: RootState) => ({
-  count: state.counter.count,
+  count: state.count,
 });
 const mapDispatchToProps = {
-  increaseCounter,
-  decreaseCounter,
+  increase: () => {
+    return { type: 'INCREMENT' }
+  },
+  decrease: () => {
+    return { type: 'DECREMENT' }
+  },
 };
 export default connect(mapStateToProps, mapDispatchToProps)(App)
