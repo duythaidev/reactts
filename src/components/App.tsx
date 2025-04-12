@@ -1,8 +1,8 @@
 import { use, useEffect, useState } from 'react'
 import axios from 'axios';
 import { connect, useSelector } from 'react-redux';
-import { RootState, useAppSelector } from './store/store';
-import { buttonStyle } from './styles/cssStyle'
+import { RootState, useAppSelector } from '../store/store';
+import { buttonStyle } from '../styles/cssStyle'
 import { Button, theme } from 'antd';
 import {
   LoginFormPage,
@@ -11,6 +11,7 @@ import {
   ProFormMoney,
   ProFormText,
 } from '@ant-design/pro-components';
+import { useNavigate } from 'react-router-dom';
 
 interface user {
   userName: string,
@@ -20,7 +21,7 @@ interface user {
 const App = ({ count, increase, decrease }: any) => {
 
   const publicCount: number = useAppSelector(state => state.count)
-
+  const navigate = useNavigate()
   const createUser = async (userName: string, age: number) => {
     console.log(userName, age)
     if (age !== 0 && userName.length > 0) {
@@ -82,6 +83,7 @@ const App = ({ count, increase, decrease }: any) => {
                     color: token.colorPrimary,
                     width: 120,
                   }}
+                  onClick={() => navigate('users')}
                 >
                   Check it out
                 </Button>
