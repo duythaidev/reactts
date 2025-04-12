@@ -1,24 +1,32 @@
-import { DECREMENT, INCREMENT } from "../actions/actionTypes";
+import { DECREMENT, DELETE_ACCOUNT, INCREMENT, SAVE_ACCOUNT } from "../actions/actionTypes";
 
 interface InitialState {
-    count: number
+    userName: string
 }
 
 // const INITIAL_STATE: InitialState = {
 //     count: 0
 // };
-const INITIAL_VAlUE: number = 0
+const INITIAL_VAlUE: InitialState = {
+    userName: ''
+}
 
 interface actionType {
-    type: typeof INCREMENT | typeof DECREMENT;
+    type: typeof SAVE_ACCOUNT | typeof DELETE_ACCOUNT;
 }
 
 const accountReducer = (state = INITIAL_VAlUE, action: actionType) => {
     switch (action.type) {
-        case INCREMENT:
-            return state + 1
-        case DECREMENT:
-            return state - 1
+        case SAVE_ACCOUNT:
+            return {
+                ...state,
+                userName: ''
+            }
+        case DELETE_ACCOUNT:
+            return {
+                ...state,
+                userName: ''
+            }
         default:
             return state
     }

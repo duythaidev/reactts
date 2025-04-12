@@ -5,7 +5,7 @@ import accountReducer from './reducers/accountReducer';
 
 const rootReducer = combineReducers({
   count: countReducer,
-  account: accountReducer
+  // account: accountReducer
 });
 
 

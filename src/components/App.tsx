@@ -11,7 +11,6 @@ import {
   ProFormMoney,
   ProFormText,
 } from '@ant-design/pro-components';
-import { useNavigate } from 'react-router-dom';
 
 interface user {
   userName: string,
@@ -19,17 +18,11 @@ interface user {
 }
 
 const App = ({ count, increase, decrease }: any) => {
-
-  const publicCount: number = useAppSelector(state => state.count)
-  const navigate = useNavigate()
+  const navigate = ()=>{}
   const createUser = async (userName: string, age: number) => {
     console.log(userName, age)
-    if (age !== 0 && userName.length > 0) {
-      const { data } = await axios.post('http://localhost:8080/api/v1/users/create', { userName: 'aaa', age: 100 })
-    }
   }
   const { token } = theme.useToken();
-  console.log(publicCount)
   return (
     <>
       <div>
@@ -83,16 +76,14 @@ const App = ({ count, increase, decrease }: any) => {
                     color: token.colorPrimary,
                     width: 120,
                   }}
-                  onClick={() => navigate('users')}
+                  onClick={() => {}}
                 >
                   Check it out
                 </Button>
               ),
             }}
-
           >
-
-            <>
+            <div>
               <ProFormText name="userName"
                 placeholder={'Username: admin or user'}
                 fieldProps={{
@@ -128,7 +119,7 @@ const App = ({ count, increase, decrease }: any) => {
                 max={1000}
                 width="lg"
               />
-            </>
+            </div>
             <div
               style={{
                 marginBlockEnd: 24,

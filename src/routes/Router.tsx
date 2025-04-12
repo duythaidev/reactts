@@ -8,10 +8,8 @@ export default function Router() {
     <BrowserRouter>
       <Routes>
         <Route path="/" index element={<App />}></Route>
-
         <Route path="users" element={<User />} />
         <Route path="users/:items/:page" element={<User />} />
-        {/* <Route path="contact" element={<Contact />} /> */}
         <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>
