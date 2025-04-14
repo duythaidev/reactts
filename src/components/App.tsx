@@ -11,7 +11,7 @@ import {
   ProFormMoney,
   ProFormText,
 } from '@ant-design/pro-components';
-import { login } from '../api/api';
+import { getUsers, login, refreshAccount } from '../api/api';
 import { useNavigate } from 'react-router-dom';
 import { UserContext } from './UserContext';
 interface IUser {
@@ -23,29 +23,22 @@ const Main = () => {
   const nav = useNavigate();
   const { token } = theme.useToken();
 
-
   const { account, changeAccount } = useContext(UserContext);
-  // console.log(account)
-  const user = {
-    userName: 'asdad',
-    age: 100,
-    roleId: 1
-  }
-  
-  const doSth = () => {
-    changeAccount(user)
-  }
 
   const handleLogin = async (userName: string, age: number) => {
-    doSth()
-    console.log(user)
     try {
-      const res = await login(userName, age);
+      // const res1 = await login('aaa', 100);
+      const res = await getUsers();
+      console.log(res)
+      // console.log(res1)
       // console.log(res);
 
       if (res && res.EC === 0) {
+        console.log('res.DT: ', res.DT)
         message.success('Success!');
-        // nav('/users');
+        // changeAccount()
+        changeAccount(res.DT)
+        nav('/users/5/2');
       } else {
         message.error('Wrong user name!');
       }
