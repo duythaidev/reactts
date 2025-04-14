@@ -9,7 +9,7 @@ import { getUsers, getUsersPaginate } from '../api/api';
 const { Header, Content, Sider } = Layout;
 
 
-interface User {
+interface IUser {
   id: string,
   userName: string,
   age: number,
@@ -17,7 +17,7 @@ interface User {
 }
 
 
-const columns: TableProps<User>['columns'] = [
+const columns: TableProps<IUser>['columns'] = [
   {
     title: 'Name',
     dataIndex: 'userName',
@@ -51,7 +51,7 @@ const columns: TableProps<User>['columns'] = [
 const User = () => {
   const { token: { colorBgContainer, borderRadiusLG } } = theme.useToken();
 
-  const [userList, setUserList] = useState<User[]>([])
+  const [userList, setUserList] = useState<IUser[]>([])
   const [page, setPage] = useState<number>(1)
 
   const [total, setTotal] = useState<number>(0)
@@ -63,7 +63,7 @@ const User = () => {
   const fetchUsersPaginate = async (page: number) => {
     const data = await getUsersPaginate(5, page)
     if (data && data.DT.rows && data.DT.rows.length) {
-      const users: User[] = []
+      const users: IUser[] = []
 
       data.DT.rows.forEach((user: any) => {
         users.push({

@@ -1,4 +1,4 @@
-import { use, useEffect, useState } from 'react'
+import { use, useContext, useEffect, useState } from 'react'
 import axios from 'axios';
 import { connect, useSelector } from 'react-redux';
 import { RootState, useAppSelector } from '../store/store';
@@ -13,20 +13,36 @@ import {
 } from '@ant-design/pro-components';
 import { login } from '../api/api';
 import { useNavigate } from 'react-router-dom';
-interface user {
+import { UserContext } from './UserContext';
+interface IUser {
   userName: string,
   age: number
 }
 
 const Main = () => {
-  
   const nav = useNavigate();
+  const { token } = theme.useToken();
+
+
+  const { account, changeAccount } = useContext(UserContext);
+  // console.log(account)
+  const user = {
+    userName: 'asdad',
+    age: 100,
+    roleId: 1
+  }
+  
+  const doSth = () => {
+    changeAccount(user)
+  }
 
   const handleLogin = async (userName: string, age: number) => {
+    doSth()
+    console.log(user)
     try {
       const res = await login(userName, age);
-      console.log(res);
-  
+      // console.log(res);
+
       if (res && res.EC === 0) {
         message.success('Success!');
         // nav('/users');
@@ -37,9 +53,8 @@ const Main = () => {
       message.error('Cannot connect to server!');
     }
   };
-  
 
-  const { token } = theme.useToken();
+
 
   return (
     <>
@@ -55,7 +70,7 @@ const Main = () => {
             logo="https://github.githubassets.com/favicons/favicon.png"
             backgroundVideoUrl="https://gw.alipayobjects.com/v/huamei_gcee1x/afts/video/jXRBRK_VAwoAAAAAAAAAAAAAK4eUAQBr"
             title="Github"
-            onFinish={(values: user) => {
+            onFinish={(values: IUser) => {
               handleLogin(values.userName, values.age)
             }}
             submitter={{

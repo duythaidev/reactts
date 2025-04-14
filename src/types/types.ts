@@ -1,5 +1,5 @@
-export interface User {
+export interface IUser {
     userName: string,
-    age: number | null,
-    roleId: number | null
+    age: number,
+    roleId: number
 }
