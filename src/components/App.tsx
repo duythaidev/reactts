@@ -3,7 +3,7 @@ import axios from 'axios';
 import { connect, useSelector } from 'react-redux';
 import { RootState, useAppSelector } from '../store/store';
 import { buttonStyle } from '../styles/cssStyle'
-import { Button, theme } from 'antd';
+import { App, Space, Button, theme, message } from 'antd';
 import {
   LoginFormPage,
   ProConfigProvider,
@@ -11,27 +11,38 @@ import {
   ProFormMoney,
   ProFormText,
 } from '@ant-design/pro-components';
-
+import { login } from '../api/api';
+import { useNavigate } from 'react-router-dom';
 interface user {
   userName: string,
   age: number
 }
 
-const App = ({ count, increase, decrease }: any) => {
-  const navigate = ()=>{}
-  const createUser = async (userName: string, age: number) => {
-    console.log(userName, age)
-  }
+const Main = () => {
+  
+  const nav = useNavigate();
+
+  const handleLogin = async (userName: string, age: number) => {
+    try {
+      const res = await login(userName, age);
+      console.log(res);
+  
+      if (res && res.EC === 0) {
+        message.success('Success!');
+        // nav('/users');
+      } else {
+        message.error('Wrong user name!');
+      }
+    } catch (error) {
+      message.error('Cannot connect to server!');
+    }
+  };
+  
+
   const { token } = theme.useToken();
+
   return (
     <>
-      <div>
-        <h1>Counter: {count}</h1>
-        <button onClick={increase} className={buttonStyle} >
-          Increase
-        </button>
-        <button onClick={decrease} className={buttonStyle}>Decrease</button>
-      </div>
       <ProConfigProvider dark={true}>
         <div
           style={{
@@ -45,7 +56,7 @@ const App = ({ count, increase, decrease }: any) => {
             backgroundVideoUrl="https://gw.alipayobjects.com/v/huamei_gcee1x/afts/video/jXRBRK_VAwoAAAAAAAAAAAAAK4eUAQBr"
             title="Github"
             onFinish={(values: user) => {
-              createUser(values.userName, values.age)
+              handleLogin(values.userName, values.age)
             }}
             submitter={{
               searchConfig: {
@@ -76,7 +87,7 @@ const App = ({ count, increase, decrease }: any) => {
                     color: token.colorPrimary,
                     width: 120,
                   }}
-                  onClick={() => {}}
+                  onClick={() => { }}
                 >
                   Check it out
                 </Button>
@@ -154,4 +165,4 @@ const mapDispatchToProps = {
     return { type: 'DECREMENT' }
   },
 };
-export default connect(mapStateToProps, mapDispatchToProps)(App)
+export default connect(mapStateToProps, mapDispatchToProps)(Main)
